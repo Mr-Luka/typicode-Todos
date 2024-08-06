@@ -46,13 +46,30 @@ const createTodo = e => {
 const toggleCompleted = e => {
     if(e.target.classList.contains('todo')){
         e.target.classList.toggle('done');
+
+        updateTodo(e.target.dataset.id, e.target.classList.contains('done'));
+        
     }
+}
+
+const updateTodo = (id, completed) => {
+    fetch(`${apiURL}/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ completed }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => console.log(data));
 }
 
 const init = () => {
     document.addEventListener('DOMContentLoaded', getTodos);
     document.querySelector('#todo-form').addEventListener('submit', createTodo);
     document.querySelector('#todo-list').addEventListener('click', toggleCompleted);
+    document.querySelector('#todo-list').addEventListener('dbclick', deleteTodo);
+
 
 
 }
