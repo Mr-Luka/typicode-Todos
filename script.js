@@ -6,17 +6,20 @@ const getTodos = ()=> {
     fetch(apiURL + '?_limit=5') // This will add on url, so it will limit in to just 5 to dos
     .then(res => res.json())
     .then(data=> {
-        data.forEach((todo)=> {
-            const div = document.createElement('div');
-            div.appendChild(document.createTextNode(todo.title));
-
-            if(todo.completed) {
-                div.classList.add('done');
-            }
-
-            document.querySelector('#todo-list').appendChild(div);
-        })
+        data.forEach((todo)=> addTodoToDOM(todo))
     });
+}
+
+const addTodoToDOM = (todo) => {
+    const div = document.createElement('div');
+        div.appendChild(document.createTextNode(todo.title));
+        div.setAttribute('data-id', todo.id); // with this I set each todo element ID, and its
+// id='1', then 2....
+
+        if(todo.completed) {
+            div.classList.add('done');
+        }
+        document.querySelector('#todo-list').appendChild(div);
 }
 
 getTodos();
