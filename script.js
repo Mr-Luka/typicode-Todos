@@ -22,4 +22,29 @@ const addTodoToDOM = (todo) => {
         document.querySelector('#todo-list').appendChild(div);
 }
 
-getTodos();
+const createTodo = e => {
+    e.preventDefault();
+    // console.log(e.target.firstElementChild.value) shows what we entered in the input
+    const newTodo = {
+        title: e.target.firstElementChild.value,
+        completed: false
+    }
+
+    fetch(apiURL,{
+        method: 'POST',
+        body: JSON.stringify(newTodo),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res=> res.json())
+    .then(data=> addTodoToDOM(data))
+}
+
+const init = () => {
+    document.addEventListener('DOMContentLoaded', getTodos);
+    document.querySelector('#todo-form').addEventListener('submit', createTodo);
+
+}
+
+init();
